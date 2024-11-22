@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "./home.css";
 function Home() {
   const [data, setData] = useState([]);
 
