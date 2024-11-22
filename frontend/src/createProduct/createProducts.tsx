@@ -1,7 +1,7 @@
-import React from "react";
-import "./App.css";
 import { useState } from "react";
 import Axios from "axios";
+
+import "./createProduct.css";
 
 function CreateProducts() {
   const [nombre, setNombre] = useState("");
@@ -12,11 +12,11 @@ function CreateProducts() {
 
   const add = () => {
     Axios.post("http://localhost:3001/create", {
-      nombre: nombre,
-      codigo: codigo,
-      inventario: inventario,
-      marca: marca,
-      valor: valor,
+      nombre,
+      codigo,
+      inventario,
+      marca,
+      valor,
     }).then(() => {
       alert("prodcuto Creado");
     });

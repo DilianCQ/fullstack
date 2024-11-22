@@ -1,6 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
+  const navigate = useNavigate();
+
+  const handleNavigation = (route: string) => {
+    navigate(route);
+  };
+
   return (
     <header className="header">
       <div className="logo">
@@ -8,10 +15,20 @@ function Header() {
       </div>
       <nav className="navbar">
         <ul className="navbar-menu">
-          <li className="navbar-item"><a href="#home">Inicio</a></li>
-          <li className="navbar-item"><a href="#about">Carrito</a></li>
-          <li className="navbar-item"><a href="#services">Servicios</a></li>
-          <li className="navbar-item"><a href="#contact">Contactenos</a></li>
+          <li className="navbar-item">
+            <a onClick={() => handleNavigation("/")}>Inicio</a>
+          </li>
+          <li className="navbar-item">
+            <a onClick={() => handleNavigation("/create-product")}>
+              Crear producto
+            </a>
+          </li>
+          <li className="navbar-item">
+            <a href="#services">Servicios</a>
+          </li>
+          <li className="navbar-item">
+            <a href="#contact">Contactenos</a>
+          </li>
         </ul>
       </nav>
     </header>
