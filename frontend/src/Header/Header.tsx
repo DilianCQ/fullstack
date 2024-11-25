@@ -24,7 +24,7 @@ function Header() {
             </a>
           </li>
           <li className="navbar-item">
-            <a href="#services">Servicios</a>
+            <a href="#services">Carrito</a>
           </li>
           <li className="navbar-item">
             <a href="#contact">Contactenos</a>
