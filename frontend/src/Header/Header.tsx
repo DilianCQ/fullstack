@@ -24,7 +24,9 @@ function Header() {
             </a>
           </li>
           <li className="navbar-item">
-            <a href="#services">Carrito</a>
+            <a href="#services" onClick={() => handleNavigation("/carrito")}>
+              Carrito
+            </a>
           </li>
           <li className="navbar-item">
             <a href="#contact">Contactenos</a>
