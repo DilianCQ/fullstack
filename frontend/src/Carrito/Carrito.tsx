@@ -1,32 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Carrito.css";
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface Producto {
   id: number;
   nombre: string;
-  precio: number;
+  valor: number;
 }
-
-const productos: Producto[] = [
-  { id: 1, nombre: "Producto 1", precio: 0.0 },
-  { id: 2, nombre: "Producto 2", precio: 0.0 },
-  { id: 3, nombre: "Producto 3", precio: 0.0 },
-  { id: 4, nombre: "Producto 4", precio: 0.0 },
-];
 
 const CarritoDeCompras = () => {
   const [carrito, setCarrito] = useState<Producto[]>([]);
   const [total, setTotal] = useState(0);
+  const [data, setData] = useState<Producto[]>([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const getProducts = () => {
+    Axios.get("http://localhost:3001/products").then((res) => {
+      if (res.data.length)
+        setData(
+          res.data.map((res: any) => ({
+            ...res,
+            valor: +res.valor,
+          }))
+        );
+    });
+  };
+
+  const routeToHome = () => {
+    navigate("/");
+  };
+
+  const addCar = () => {
+    Axios.post(
+      "http://localhost:3001/carrito",
+      carrito.map((prod) => ({ ...prod, id_producto: prod.id }))
+    ).then(() => {
+      alert("Productos agregados al carrito");
+      routeToHome();
+    });
+  };
 
   const agregarAlCarrito = (producto: Producto) => {
     setCarrito([...carrito, producto]);
-    setTotal(total + producto.precio);
+    setTotal(total + producto.valor);
   };
 
   const eliminarDelCarrito = (id: number) => {
     const nuevoCarrito = carrito.filter((producto) => producto.id !== id);
     setCarrito(nuevoCarrito);
-    setTotal(nuevoCarrito.reduce((acc, producto) => acc + producto.precio, 0));
+    setTotal(nuevoCarrito.reduce((acc, producto) => acc + producto.valor, 0));
   };
 
   return (
@@ -35,7 +63,7 @@ const CarritoDeCompras = () => {
         Carrito de Compras
       </h1>
       <div className="flex flex-wrap justify-center mb-4">
-        {productos.map((producto) => (
+        {data.map((producto) => (
           <div
             key={producto.id}
             className="bg-white shadow-md rounded p-4 w-48 m-4"
@@ -43,7 +71,7 @@ const CarritoDeCompras = () => {
             <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 mb-4" />
             <h2 className="text-lg font-bold mb-2">{producto.nombre}</h2>
             <p className="text-lg font-bold text-[#046cdb] mb-4">
-              ${producto.precio}
+              ${producto.valor}
             </p>
             <button
               className="bg-[#046cdb] hover:bg-[#034ea2] text-white font-bold py-2 px-4 rounded"
@@ -59,7 +87,7 @@ const CarritoDeCompras = () => {
         {carrito.map((producto) => (
           <li key={producto.id} className="flex justify-between mb-2">
             <span>{producto.nombre}</span>
-            <span>${producto.precio}</span>
+            <span>${producto.valor}</span>
             <button
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => eliminarDelCarrito(producto.id)}
@@ -70,6 +98,13 @@ const CarritoDeCompras = () => {
         ))}
       </ul>
       <p className="text-lg font-bold text-[#046cdb] mb-4">Total: ${total}</p>
+      <button
+        type="button"
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        onClick={addCar}
+      >
+        Comprar
+      </button>
     </div>
   );
 };

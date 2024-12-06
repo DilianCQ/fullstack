@@ -41,6 +41,7 @@ function CreateProducts() {
       valor,
     }).then(() => {
       alert("prodcuto Creado");
+      routeToHome();
     });
   };
 

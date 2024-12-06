@@ -34,6 +34,24 @@ app.post("/create", (req, res) => {
   );
 });
 
+app.post("/carrito", (req, res) => {
+  req.body.forEach((prod) => {
+    const { nombre, valor, id_producto } = prod;
+
+    db.query(
+      "INSERT INTO carrito(nombre, valor, id_producto) VALUES(?,?,?)",
+      [nombre, valor, id_producto],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send("carrito agregado con exito");
+        }
+      }
+    );
+  });
+});
+
 app.get("/products", (req, res) => {
   db.query("SELECT * FROM productos", (err, result) => {
     if (err) {
